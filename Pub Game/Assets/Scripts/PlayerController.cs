@@ -20,32 +20,40 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        FloorCheck();
+        HandleMovement();
+    }
+    private void HandleMovement()
+    {
+        float x = Input.GetAxis("Horizontal");
+        float y = Input.GetAxis("Vertical");
+        Vector3 moveDir = new Vector3(x, 0, y);
+        rb.velocity = moveDir * speed;
+
+        if (x != 0 && x < 0)
+        {
+            sr.flipX = true;
+        }
+
+        if (x != 0 && x > 0)
+        {
+            sr.flipX = false;
+        }
+    }
+
+    private void FloorCheck()
+    {
         RaycastHit hit;
         Vector3 castPos = transform.position;
         castPos.y += 1;
-        if(Physics.Raycast(castPos, -transform.up, out hit, Mathf.Infinity, floor))
+        if (Physics.Raycast(castPos, -transform.up, out hit, Mathf.Infinity, floor))
         {
-            if(hit.collider != null)
+            if (hit.collider != null)
             {
                 Vector3 movePos = transform.position;
                 movePos.y = hit.point.y + groundDist;
                 transform.position = movePos;
             }
-        }
-
-        float x = Input.GetAxis("Horizontal");
-        float y = Input.GetAxis("Vertical");
-        Vector3 moveDir = new Vector3(x,0,y);
-        rb.velocity = moveDir * speed;
-
-        if(x != 0 && x < 0)
-        {
-            sr.flipX = true;
-        }
-
-        if(x != 0 && x > 0)
-        {
-            sr.flipX = false;
         }
     }
 }
