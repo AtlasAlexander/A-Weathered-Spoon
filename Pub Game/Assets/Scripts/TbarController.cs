@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class TbarController : MonoBehaviour
 {
+    public CameraManager cameraManager;
    public GameObject prompt;
 
     private void Start()
     {
+        cameraManager = FindAnyObjectByType<CameraManager>();
         prompt.SetActive(false);
     }
 
@@ -16,6 +18,10 @@ public class TbarController : MonoBehaviour
         if (other.tag == "Player")
         { 
             prompt.SetActive(true);
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            cameraManager.TbarCamController(cameraManager.tbarCam); 
         }
     }
     private void OnTriggerExit(Collider other)
